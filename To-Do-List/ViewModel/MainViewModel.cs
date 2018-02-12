@@ -167,7 +167,7 @@ namespace To_Do_List.ViewModel
         {
             _runClock = true;
 
-            Task.Run(
+            System.Threading.Tasks.Task.Run(
                 async () =>
                 {
                     while (_runClock)
@@ -178,7 +178,7 @@ namespace To_Do_List.ViewModel
                                 Clock = DateTime.Now.ToString("HH:mm:ss");
                             });
 
-                        await Task.Delay(1000);
+                        await System.Threading.Tasks.Task.Delay(1000);
                     }
                 });
         }

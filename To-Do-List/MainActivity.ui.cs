@@ -1,88 +1,97 @@
-﻿using Android.Widget;
+﻿using System.Collections.Generic;
+using Android.Support.V7.Widget;
+using Android.Support.Design;
+using Android.Widget;
 using GalaSoft.MvvmLight.Views;
+using JimBobBennett.MvvmLight.AppCompat;
+using To_Do_List.Model;
 
 namespace To_Do_List
 {
     // In this partial Activity, we provide access to the UI elements.
     // This file is partial to keep things cleaner in the MainActivity.cs
     // See http://blog.galasoft.ch/posts/2014/11/structuring-your-android-activities/
-    public partial class MainActivity : ActivityBase
+    public partial class MainActivity : AppCompatActivityBase
     {
-        private TextView _welcomeText;
 
-        public TextView WelcomeText
-        {
-            get
-            {
-                return _welcomeText
-                       ?? (_welcomeText = FindViewById<TextView>(Resource.Id.WelcomeText));
-            }
-        }
+        private List<Task> tasksList = new List<Task>();
+        private RecyclerView recyclerView;
+        private TasksAdapter tAdapter;
+        //private TextView _welcomeText;
 
-        private Button _incrementButton;
+        //public TextView WelcomeText
+        //{
+        //    get
+        //    {
+        //        return _welcomeText
+        //               ?? (_welcomeText = FindViewById<TextView>(Resource.Id.WelcomeText));
+        //    }
+        //}
 
-        public Button IncrementButton
-        {
-            get
-            {
-                return _incrementButton
-                       ?? (_incrementButton = FindViewById<Button>(Resource.Id.IncrementButton));
-            }
-        }
+        //private Button _incrementButton;
 
-        private TextView _tapText;
+        //public Button IncrementButton
+        //{
+        //    get
+        //    {
+        //        return _incrementButton
+        //               ?? (_incrementButton = FindViewById<Button>(Resource.Id.IncrementButton));
+        //    }
+        //}
 
-        public TextView TapText
-        {
-            get
-            {
-                return _tapText
-                       ?? (_tapText = FindViewById<TextView>(Resource.Id.TapText));
-            }
-        }
+        //private TextView _tapText;
 
-        private Button _showDialogButton;
+        //public TextView TapText
+        //{
+        //    get
+        //    {
+        //        return _tapText
+        //               ?? (_tapText = FindViewById<TextView>(Resource.Id.TapText));
+        //    }
+        //}
 
-        public Button ShowDialogButton
-        {
-            get
-            {
-                return _showDialogButton
-                       ?? (_showDialogButton = FindViewById<Button>(Resource.Id.ShowDialogButton));
-            }
-        }
+        //private Button _showDialogButton;
 
-        private EditText _dialogNavText;
+        //public Button ShowDialogButton
+        //{
+        //    get
+        //    {
+        //        return _showDialogButton
+        //               ?? (_showDialogButton = FindViewById<Button>(Resource.Id.ShowDialogButton));
+        //    }
+        //}
 
-        public EditText DialogNavText
-        {
-            get
-            {
-                return _dialogNavText
-                       ?? (_dialogNavText = FindViewById<EditText>(Resource.Id.DialogNavText));
-            }
-        }
+        //private EditText _dialogNavText;
 
-        private TextView _clockText;
+        //public EditText DialogNavText
+        //{
+        //    get
+        //    {
+        //        return _dialogNavText
+        //               ?? (_dialogNavText = FindViewById<EditText>(Resource.Id.DialogNavText));
+        //    }
+        //}
 
-        public TextView ClockText
-        {
-            get
-            {
-                return _clockText
-                       ?? (_clockText = FindViewById<TextView>(Resource.Id.ClockText));
-            }
-        }
+        //private TextView _clockText;
 
-        private Button _sendMessageButton;
+        //public TextView ClockText
+        //{
+        //    get
+        //    {
+        //        return _clockText
+        //               ?? (_clockText = FindViewById<TextView>(Resource.Id.ClockText));
+        //    }
+        //}
 
-        public Button SendMessageButton
-        {
-            get
-            {
-                return _sendMessageButton
-                       ?? (_sendMessageButton = FindViewById<Button>(Resource.Id.SendMessageButton));
-            }
-        }
+        //private Button _sendMessageButton;
+
+        //public Button SendMessageButton
+        //{
+        //    get
+        //    {
+        //        return _sendMessageButton
+        //               ?? (_sendMessageButton = FindViewById<Button>(Resource.Id.SendMessageButton));
+        //    }
+        //}
     }
 }
