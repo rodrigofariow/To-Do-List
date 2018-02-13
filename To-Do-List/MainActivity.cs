@@ -12,7 +12,7 @@ using To_Do_List.Model;
 
 namespace To_Do_List
 {
-    [Activity(Label = "MVVM LIGHT SAMPLE", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "MVVM LIGHT SAMPLE", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public partial class MainActivity : AppCompatActivityBase
     {
         // Keep track of bindings to avoid premature garbage collection
@@ -41,12 +41,13 @@ namespace To_Do_List
             recyclerView = (RecyclerView)FindViewById(Resource.Id.ToDoRecyclerView);
 
             tAdapter = new TasksAdapter(tasksList);
+            prepareToDoListData();
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ApplicationContext);
             recyclerView.SetLayoutManager(mLayoutManager);
             recyclerView.SetItemAnimator(new DefaultItemAnimator());
             recyclerView.SetAdapter(tAdapter);
 
-            prepareToDoListData();
+            
             // Illustrates how to use the Messenger by receiving a message
             // and sending a message back.
             Messenger.Default.Register<NotificationMessageAction<string>>(

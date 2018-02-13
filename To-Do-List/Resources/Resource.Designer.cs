@@ -3360,6 +3360,9 @@ namespace To_Do_List
 			// aapt resource value: 0x7f08016d
 			public const int Animation_Design_BottomSheetDialog = 2131231085;
 			
+			// aapt resource value: 0x7f08018e
+			public const int AppTheme = 2131231118;
+			
 			// aapt resource value: 0x7f0800a6
 			public const int Base_AlertDialog_AppCompat = 2131230886;
 			
