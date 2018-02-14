@@ -18,7 +18,7 @@ namespace To_Do_List.ViewModel
         private readonly INavigationService _navigationService;
         private RelayCommand _incrementCommand;
         private List<Task> _tasks = new List<Task>();
-        private RelayCommand<string> _navigateCommand;
+        private RelayCommand<Object> _navigateCommand;
         private bool _runClock;
         private RelayCommand<string> _showDialogCommand;
 
@@ -44,12 +44,12 @@ namespace To_Do_List.ViewModel
         /// Goes to the second page, using the navigation service.
         /// Use the "mvvmr*" snippet group to create more such commands.
         /// </summary>
-        public RelayCommand<string> NavigateCommand
+        public RelayCommand<Object> NavigateCommand
         {
             get
             {
                 return _navigateCommand
-                       ?? (_navigateCommand = new RelayCommand<string>(
+                       ?? (_navigateCommand = new RelayCommand<Object>(
                            parameter => _navigationService.NavigateTo(
                                ViewModelLocator.TaskPageKey,
                                parameter)));

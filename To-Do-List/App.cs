@@ -21,6 +21,7 @@ namespace To_Do_List
 
                     // Configure and register the MVVM Light NavigationService
                     var nav = new NavigationService();
+
                     SimpleIoc.Default.Register<INavigationService>(() => nav);
                     nav.Configure(ViewModelLocator.TaskPageKey, typeof(TaskActivity));
 

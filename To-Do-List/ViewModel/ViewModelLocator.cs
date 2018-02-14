@@ -20,7 +20,7 @@ namespace To_Do_List.ViewModel
         /// <summary>
         /// The key used by the NavigationService to go to the second page.
         /// </summary>
-        public const string TaskPageKey = "TaskPage";
+        public const string TaskPageKey = "Task Page";
 
         /// <summary>
         /// Gets the Main property.

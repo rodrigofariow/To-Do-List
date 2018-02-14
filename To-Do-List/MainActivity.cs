@@ -13,6 +13,7 @@ using Android.Widget;
 using Android.Content;
 using Newtonsoft.Json;
 using System;
+using Android.Views;
 
 namespace To_Do_List
 {
@@ -68,7 +69,10 @@ namespace To_Do_List
             _taskRecyclerView = (RecyclerView)FindViewById(Resource.Id.ToDoRecyclerView);
 
             _adapter = Vm.Tasks.GetRecyclerAdapter(BindViewHolder,
-                                          Resource.Layout.task_list_row);
+                                          Resource.Layout.task_list_row, (int position1, View view1, int position2, View view2) =>
+                                          {
+                                          Vm.NavigateCommand.Execute(Vm.Tasks[position2]);
+                                            });
 
             //tAdapter = new TasksAdapter(tasksList);
             //tAdapter.ItemClick += OnItemClick;
@@ -77,7 +81,6 @@ namespace To_Do_List
             //recyclerView.SetLayoutManager(mLayoutManager);
             //recyclerView.AddItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.Vertical));
             //recyclerView.SetItemAnimator(new DefaultItemAnimator());
-            Vm.Tasks.GetRecyclerAdapter(BindViewHolder, Resource.Layout.task_list_row);
 
             _taskRecyclerView.SetAdapter(_adapter);
 
@@ -152,24 +155,24 @@ namespace To_Do_List
         //    StartActivity(i);
         //}
 
-        private void prepareToDoListData()
-        {
-            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
-            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
-            tasksList.Add(new Task("Replace the gas bottle"));
-            tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
-            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
-            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
-            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
-            tasksList.Add(new Task("Replace the gas bottle"));
-            tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
-            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
-            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
-            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
-            tasksList.Add(new Task("Replace the gas bottle"));
+        //private void prepareToDoListData()
+        //{
+        //    tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+        //    tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+        //    tasksList.Add(new Task("Replace the gas bottle"));
+        //    tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+        //    tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+        //    tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+        //    tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+        //    tasksList.Add(new Task("Replace the gas bottle"));
+        //    tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+        //    tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+        //    tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+        //    tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+        //    tasksList.Add(new Task("Replace the gas bottle"));
 
-            _adapter.NotifyDataSetChanged();
-        }
+        //    _adapter.NotifyDataSetChanged();
+        //}
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)
         {

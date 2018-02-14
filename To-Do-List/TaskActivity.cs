@@ -16,7 +16,7 @@ using To_Do_List.Model;
 
 namespace To_Do_List
 {
-    [Activity(Label = "Task", Theme = "@style/AppTheme")]
+    [Activity(Label = "Task Page", Theme = "@style/AppTheme")]
     public partial class TaskActivity
     {
         Task currentTask;
@@ -28,7 +28,7 @@ namespace To_Do_List
             SetContentView(Resource.Layout.Task_details);
 
             var nav = (NavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
-            currentTask = nav.GetAndRemoveParameter<Task>(Intent);
+            currentTask = nav.GetAndRemoveParameter(Intent) as Task;
 
             if(currentTask != null)
             {
