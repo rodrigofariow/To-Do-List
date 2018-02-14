@@ -12,7 +12,7 @@ using To_Do_List.Model;
 
 namespace To_Do_List
 {
-    [Activity(Label = "MVVM LIGHT SAMPLE", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
+    [Activity(Label = "TODO", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public partial class MainActivity : AppCompatActivityBase
     {
         // Keep track of bindings to avoid premature garbage collection
@@ -41,13 +41,14 @@ namespace To_Do_List
             recyclerView = (RecyclerView)FindViewById(Resource.Id.ToDoRecyclerView);
 
             tAdapter = new TasksAdapter(tasksList);
-            prepareToDoListData();
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ApplicationContext);
+            
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(mLayoutManager);
+            recyclerView.AddItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.Vertical));
             recyclerView.SetItemAnimator(new DefaultItemAnimator());
             recyclerView.SetAdapter(tAdapter);
 
-            
+            prepareToDoListData();
             // Illustrates how to use the Messenger by receiving a message
             // and sending a message back.
             Messenger.Default.Register<NotificationMessageAction<string>>(
@@ -108,10 +109,21 @@ namespace To_Do_List
 
         private void prepareToDoListData()
         {
-            Task task = new Task("Do the dishes", System.DateTime.Now);
-            tasksList.Add(task);
+            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+            tasksList.Add(new Task("Replace the gas bottle"));
+            tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+            tasksList.Add(new Task("Replace the gas bottle"));
+            tasksList.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+            tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
+            tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
+            tasksList.Add(new Task("Replace the gas bottle"));
 
-            tAdapter.NotifyDataSetChanged();
+            //tAdapter.NotifyDataSetChanged();
         }
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)

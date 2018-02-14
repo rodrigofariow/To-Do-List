@@ -49,7 +49,7 @@ namespace To_Do_List.Model
             Task task = TasksList[position];
             var mv = holder as MyViewHolder;
             mv.Title.Text = task.Title;
-            mv.Date.Text = task.Date.ToShortDateString();
+            mv.Date.Text = task.Date.HasValue ? ((DateTime)task.Date).ToShortDateString() : "";
         }
 
         public override int ItemCount
