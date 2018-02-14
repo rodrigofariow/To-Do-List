@@ -9,10 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Java.IO;
+using Newtonsoft.Json;
 
 namespace To_Do_List.Model
 {
-    class Task
+    [Serializable]
+    public class Task : Java.Lang.Object
     {
         public Task(string title, DateTime date, string content = "")
         {
@@ -31,5 +34,6 @@ namespace To_Do_List.Model
         public string Title { get; private set; }
         public string Content { get; private set; }
         public DateTime? Date { get; private set; }
+
     }
 }

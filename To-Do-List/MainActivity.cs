@@ -9,18 +9,45 @@ using To_Do_List.ViewModel;
 using Messenger = GalaSoft.MvvmLight.Messaging.Messenger;
 using Android.Support.V7.Widget;
 using To_Do_List.Model;
+using Android.Widget;
+using Android.Content;
+using Newtonsoft.Json;
+using System;
 
 namespace To_Do_List
 {
     [Activity(Label = "TODO", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
-    public partial class MainActivity : AppCompatActivityBase
+    public partial class MainActivity
     {
+
+        private ObservableRecyclerAdapter<Task, CachingViewHolder> _adapter;
+        private List<Task> tasksList = new List<Task>();
+        private RecyclerView _taskRecyclerView;
+        private TasksAdapter tAdapter;
         // Keep track of bindings to avoid premature garbage collection
         private readonly List<Binding> _bindings = new List<Binding>();
 
-        /// <summary>
-        /// Gets a reference to the MainViewModel from the ViewModelLocator.
-        /// </summary>
+        private void BindViewHolder(CachingViewHolder holder,
+                    Task taskModel,
+                    int position)
+        {
+            var title = holder.FindCachedViewById<TextView>(Resource.Id.title);
+            title.Text = taskModel.Title;
+
+            var date = holder.FindCachedViewById<TextView>(Resource.Id.date);
+            date.Text = taskModel.Date.HasValue ? ((DateTime)taskModel.Date).ToShortDateString() : "";
+        }
+
+        public RecyclerView TaskRecyclerView
+        {
+            get
+            {
+                return _taskRecyclerView ??
+                  (_taskRecyclerView = FindViewById<RecyclerView>(
+                        Resource.Id.ToDoRecyclerView));
+            }
+        }
+
         private MainViewModel Vm
         {
             get
@@ -32,28 +59,38 @@ namespace To_Do_List
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            recyclerView = (RecyclerView)FindViewById(Resource.Id.ToDoRecyclerView);
+            _taskRecyclerView = (RecyclerView)FindViewById(Resource.Id.ToDoRecyclerView);
 
-            tAdapter = new TasksAdapter(tasksList);
+            _adapter = Vm.Tasks.GetRecyclerAdapter(BindViewHolder,
+                                          Resource.Layout.task_list_row);
+
+            //tAdapter = new TasksAdapter(tasksList);
+            //tAdapter.ItemClick += OnItemClick;
+            //prepareToDoListData();
+            _taskRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+            //recyclerView.SetLayoutManager(mLayoutManager);
+            //recyclerView.AddItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.Vertical));
+            //recyclerView.SetItemAnimator(new DefaultItemAnimator());
+            Vm.Tasks.GetRecyclerAdapter(BindViewHolder, Resource.Layout.task_list_row);
+
+            _taskRecyclerView.SetAdapter(_adapter);
+
             
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-            recyclerView.SetLayoutManager(mLayoutManager);
-            recyclerView.AddItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.Vertical));
-            recyclerView.SetItemAnimator(new DefaultItemAnimator());
-            recyclerView.SetAdapter(tAdapter);
-
-            prepareToDoListData();
             // Illustrates how to use the Messenger by receiving a message
             // and sending a message back.
             Messenger.Default.Register<NotificationMessageAction<string>>(
                 this,
                 HandleNotificationMessage);
+
+            Tasks.SetCommand(
+                "Click",
+                Vm.NavigateCommand);
 
             // Binding and commanding
 
@@ -107,6 +144,14 @@ namespace To_Do_List
             //    Vm.SendMessageCommand);
         }
 
+        //void OnItemClick(object sender, int position)
+        //{
+
+        //    Intent i = new Intent(this, typeof(TaskActivity));
+        //    i.PutExtra("task", tasksList[position]);
+        //    StartActivity(i);
+        //}
+
         private void prepareToDoListData()
         {
             tasksList.Add(new Task("Do the dishes", System.DateTime.Now));
@@ -123,7 +168,7 @@ namespace To_Do_List
             tasksList.Add(new Task("Buy some fruit", System.DateTime.Now));
             tasksList.Add(new Task("Replace the gas bottle"));
 
-            //tAdapter.NotifyDataSetChanged();
+            _adapter.NotifyDataSetChanged();
         }
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)
@@ -132,26 +177,26 @@ namespace To_Do_List
             message.Execute("Success! (from MainActivity.cs)");
         }
 
-        protected override void OnResume()
-        {
-            // Start the clock background thread on the MainViewModel.
-            Vm.StartClock();
-            base.OnResume();
-        }
+        //protected override void OnResume()
+        //{
+        //    // Start the clock background thread on the MainViewModel.
+        //    Vm.StartClock();
+        //    base.OnResume();
+        //}
 
-        protected override void OnPause()
-        {
-            // Stop the clock background thread on the MainViewModel.
-            Vm.StopClock();
-            base.OnPause();
-        }
+        //protected override void OnPause()
+        //{
+        //    // Stop the clock background thread on the MainViewModel.
+        //    Vm.StopClock();
+        //    base.OnPause();
+        //}
 
-        protected override void OnDestroy()
-        {
-            // Stop the clock background thread on the MainViewModel.
-            Vm.StopClock();
-            base.OnDestroy();
-        }
+        //protected override void OnDestroy()
+        //{
+        //    // Stop the clock background thread on the MainViewModel.
+        //    Vm.StopClock();
+        //    base.OnDestroy();
+        //}
     }
 }
 

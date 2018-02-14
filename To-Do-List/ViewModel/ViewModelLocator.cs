@@ -20,7 +20,7 @@ namespace To_Do_List.ViewModel
         /// <summary>
         /// The key used by the NavigationService to go to the second page.
         /// </summary>
-        public const string SecondPageKey = "SecondPage";
+        public const string TaskPageKey = "TaskPage";
 
         /// <summary>
         /// Gets the Main property.
@@ -55,12 +55,12 @@ namespace To_Do_List.ViewModel
                 && !UseDesignTimeData)
             {
                 // Use this service in production.
-                SimpleIoc.Default.Register<IDataService, DataService>();
+                SimpleIoc.Default.Register<ITaskService, TaskService>();
             }
             else
             {
                 // Use this service in Blend or when forcing the use of design time data.
-                SimpleIoc.Default.Register<IDataService, DesignDataService>();
+                SimpleIoc.Default.Register<ITaskService, DesignDataService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

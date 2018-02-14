@@ -15,15 +15,18 @@ namespace To_Do_List.Model
 {
     class TasksAdapter : RecyclerView.Adapter
     {
+        public event EventHandler<int> ItemClick;
 
         public List<Task> TasksList { get; private set; }
 
         public class MyViewHolder : RecyclerView.ViewHolder
         {
-            public MyViewHolder(View view) : base(view)
+            public MyViewHolder(View view, Action<int> listener) : base(view)
             {
                 Title = (TextView)view.FindViewById(Resource.Id.title);
                 Date = (TextView)view.FindViewById(Resource.Id.date);
+
+                view.Click += (sender, e) => listener(base.LayoutPosition);
             }
 
             public TextView Title { get; private set; }
@@ -41,7 +44,7 @@ namespace To_Do_List.Model
             View itemView = LayoutInflater.From(parent.Context)
                     .Inflate(Resource.Layout.task_list_row, parent, false);
 
-            return new MyViewHolder(itemView);
+            return new MyViewHolder(itemView, OnClick);
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -55,6 +58,12 @@ namespace To_Do_List.Model
         public override int ItemCount
         {
             get { return TasksList.Count; }
+        }
+
+        void OnClick(int position)
+        {
+            if (ItemClick != null)
+                ItemClick(this, position);
         }
     }
 }

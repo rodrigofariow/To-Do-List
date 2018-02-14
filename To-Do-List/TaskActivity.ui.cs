@@ -11,18 +11,11 @@ namespace To_Do_List
     // In this partial Activity, we provide access to the UI elements.
     // This file is partial to keep things cleaner in the MainActivity.cs
     // See http://blog.galasoft.ch/posts/2014/11/structuring-your-android-activities/
-    public partial class MainActivity : AppCompatActivityBase
+    public partial class TaskActivity : AppCompatActivityBase
     {
-        private RecyclerView _tasks;
 
-        public RecyclerView Tasks
-        {
-            get
-            {
-                return _tasks
-                       ?? (_tasks = FindViewById<RecyclerView>(Resource.Id.ToDoRecyclerView));
-            }
-        }
+        //private TextView _welcomeText;
+
         //public TextView WelcomeText
         //{
         //    get

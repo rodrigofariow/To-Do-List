@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,67 +11,33 @@ using To_Do_List.Model;
 
 namespace To_Do_List.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// See http://www.mvvmlight.net
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// The <see cref="Clock" /> property's name.
-        /// </summary>
-        public const string ClockPropertyName = "Clock";
 
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private readonly IDataService _dataService;
+        private readonly ITaskService _taskService;
         private readonly INavigationService _navigationService;
-        private string _clock = "Starting...";
         private RelayCommand _incrementCommand;
-        private int _index;
+        private List<Task> _tasks = new List<Task>();
         private RelayCommand<string> _navigateCommand;
         private bool _runClock;
         private RelayCommand<string> _showDialogCommand;
-        private string _welcomeTitle = "Hello MVVM";
-
-        /// <summary>
-        /// Sets and gets the Clock property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// Use the "mvvminpc*" snippet group to create more such properties.
-        /// </summary>
-        public string Clock
-        {
-            get
-            {
-                return _clock;
-            }
-            set
-            {
-                Set(ref _clock, value);
-            }
-        }
 
         /// <summary>
         /// Gets the IncrementCommand.
         /// Use the "mvvmr*" snippet group to create more such commands.
         /// </summary>
-        public RelayCommand IncrementCommand
-        {
-            get
-            {
-                return _incrementCommand
-                       ?? (_incrementCommand = new RelayCommand(
-                           () =>
-                           {
-                               WelcomeTitle = string.Format("Clicked {0} time(s)", ++_index);
-                           }));
-            }
-        }
+        //public RelayCommand IncrementCommand
+        //{
+        //    get
+        //    {
+        //        return _incrementCommand
+        //               ?? (_incrementCommand = new RelayCommand(
+        //                   () =>
+        //                   {
+        //                       WelcomeTitle = string.Format("Clicked {0} time(s)", ++_index);
+        //                   }));
+        //    }
+        //}
 
         /// <summary>
         /// Gets the NavigateCommand.
@@ -85,7 +51,7 @@ namespace To_Do_List.ViewModel
                 return _navigateCommand
                        ?? (_navigateCommand = new RelayCommand<string>(
                            parameter => _navigationService.NavigateTo(
-                               ViewModelLocator.SecondPageKey,
+                               ViewModelLocator.TaskPageKey,
                                parameter)));
             }
         }
@@ -123,15 +89,28 @@ namespace To_Do_List.ViewModel
         /// Changes to this property's value raise the PropertyChanged event.
         /// Use the "mvvminpc*" snippet group to create more such properties.
         /// </summary>
-        public string WelcomeTitle
+        public List<Task> Tasks
         {
             get
             {
-                return _welcomeTitle;
+                _tasks.Add(new Task("Do the dishes", DateTime.Now));
+                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+                _tasks.Add(new Task("Replace the gas bottle"));
+                _tasks.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+                _tasks.Add(new Task("Do the dishes", DateTime.Now));
+                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+                _tasks.Add(new Task("Replace the gas bottle"));
+                _tasks.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+                _tasks.Add(new Task("Do the dishes", DateTime.Now));
+                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+                _tasks.Add(new Task("Replace the gas bottle"));
+                return _tasks;
             }
             set
             {
-                Set(ref _welcomeTitle, value);
+                Set(ref _tasks, value);
             }
         }
 
@@ -139,23 +118,23 @@ namespace To_Do_List.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel(
-            IDataService dataService,
+            ITaskService taskService,
             INavigationService navigationService)
         {
-            _dataService = dataService;
+            _taskService = taskService;
             _navigationService = navigationService;
 
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
+            //_taskService.GetTasks(
+            //    (item, error) =>
+            //    {
+            //        if (error != null)
+            //        {
+            //            // Report error here
+            //            return;
+            //        }
 
-                    WelcomeTitle = item.Title;
-                });
+            //        WelcomeTitle = item.Title;
+            //    });
         }
 
         /// <summary>
@@ -163,30 +142,26 @@ namespace To_Do_List.ViewModel
         /// dispatch an instruction from a background thread
         /// back to the main thread.
         /// </summary>
-        public void StartClock()
-        {
-            _runClock = true;
+        //public void StartClock()
+        //{
+        //    _runClock = true;
 
-            System.Threading.Tasks.Task.Run(
-                async () =>
-                {
-                    while (_runClock)
-                    {
-                        DispatcherHelper.CheckBeginInvokeOnUI(
-                            () =>
-                            {
-                                Clock = DateTime.Now.ToString("HH:mm:ss");
-                            });
+        //    System.Threading.Tasks.Task.Run(
+        //        async () =>
+        //        {
+        //            while (_runClock)
+        //            {
+        //                DispatcherHelper.CheckBeginInvokeOnUI(
+        //                    () =>
+        //                    {
+        //                        Clock = DateTime.Now.ToString("HH:mm:ss");
+        //                    });
 
-                        await System.Threading.Tasks.Task.Delay(1000);
-                    }
-                });
-        }
+        //                await System.Threading.Tasks.Task.Delay(1000);
+        //            }
+        //        });
+        //}
 
-        public void StopClock()
-        {
-            _runClock = false;
-        }
 
         ////public override void Cleanup()
         ////{
@@ -195,33 +170,33 @@ namespace To_Do_List.ViewModel
         ////    base.Cleanup();
         ////}
 
-        private RelayCommand _sendMessageCommand;
+        //private RelayCommand _sendMessageCommand;
 
-        /// <summary>
-        /// Gets the SendMessageCommand.
-        /// </summary>
-        public RelayCommand SendMessageCommand
-        {
-            get
-            {
-                return _sendMessageCommand
-                    ?? (_sendMessageCommand = new RelayCommand(
-                    () =>
-                    {
-                        // Any object can send messages.
-                        // For this simple demo, the message is received by App.xaml.cs
-                        // (see line 98).
-                        // This message type also allows a reply to be sent.
+        ///// <summary>
+        ///// Gets the SendMessageCommand.
+        ///// </summary>
+        //public RelayCommand SendMessageCommand
+        //{
+        //    get
+        //    {
+        //        return _sendMessageCommand
+        //            ?? (_sendMessageCommand = new RelayCommand(
+        //            () =>
+        //            {
+        //                // Any object can send messages.
+        //                // For this simple demo, the message is received by App.xaml.cs
+        //                // (see line 98).
+        //                // This message type also allows a reply to be sent.
 
-                        Messenger.Default.Send(
-                            new NotificationMessageAction<string>(
-                                "AnyNotification",
-                                reply =>
-                                {
-                                    WelcomeTitle = reply;
-                                }));
-                    }));
-            }
-        }
+        //                Messenger.Default.Send(
+        //                    new NotificationMessageAction<string>(
+        //                        "AnyNotification",
+        //                        reply =>
+        //                        {
+        //                            WelcomeTitle = reply;
+        //                        }));
+        //            }));
+        //    }
+        //}
     }
 }
