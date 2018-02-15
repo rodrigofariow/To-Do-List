@@ -10,29 +10,73 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using GalaSoft.MvvmLight.Views;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Newtonsoft.Json;
 using To_Do_List.Model;
+using JimBobBennett.MvvmLight.AppCompat;
+using GalaSoft.MvvmLight.Helpers;
+using To_Do_List.ViewModel;
 
 namespace To_Do_List
 {
     [Activity(Label = "Task Page", Theme = "@style/AppTheme")]
     public partial class TaskActivity
     {
-        Task currentTask;
+        private readonly List<Binding> _bindings = new List<Binding>();
+
+        private TaskViewModel Vm
+        {
+            get
+            {
+                return App.Locator.Task;
+            }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             // Set our view from the "Second" layout resource
             SetContentView(Resource.Layout.Task_details);
 
-            var nav = (NavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
-            currentTask = nav.GetAndRemoveParameter(Intent) as Task;
+            SetSupportActionBar(Toolbar);
 
-            if(currentTask != null)
+            var nav = (AppCompatNavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
+            Vm.PreviousTask = nav.GetAndRemoveParameter(Intent) as Task;
+
+
+            if (Vm.PreviousTask != null)
             {
-                Toast.MakeText(this, currentTask.ToString(), ToastLength.Short).Show();
+
+                _bindings.Add(
+                    this.SetBinding(
+                        () => Vm.EditedTask.Title,
+                        () => Title.Text,
+                        BindingMode.TwoWay));
+
+                _bindings.Add(
+                    this.SetBinding(
+                        () => (DateTime)Vm.EditedTask.Date,
+                        () => Date.DateTime));
+
+                _bindings.Add(
+                this.SetBinding(
+                    () => Vm.EditedTask.Content,
+                    () => Content.Text,
+                    BindingMode.TwoWay));
+
+                Vm.EditedTask = Vm.PreviousTask;
+
+                //Title.Text = Vm.PreviousTask.Title;
+                //if (Vm.PreviousTask.Content != "")
+                //{
+                //    Content.Text = Vm.PreviousTask.Content;
+                //}
+
+                //if (Vm.PreviousTask.Date.HasValue)
+                //{
+                //    Date.Text = ((DateTime)Vm.PreviousTask.Date).ToShortDateString();
+                //}
 
             }
             // Retrieve navigation parameter and set as current "DataContext"

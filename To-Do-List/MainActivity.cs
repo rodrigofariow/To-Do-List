@@ -11,7 +11,6 @@ using Android.Support.V7.Widget;
 using To_Do_List.Model;
 using Android.Widget;
 using Android.Content;
-using Newtonsoft.Json;
 using System;
 using Android.Views;
 
@@ -22,9 +21,8 @@ namespace To_Do_List
     {
 
         private ObservableRecyclerAdapter<Task, CachingViewHolder> _adapter;
-        private List<Task> tasksList = new List<Task>();
+        //private List<Task> tasksList = new List<Task>();
         private RecyclerView _taskRecyclerView;
-        private TasksAdapter tAdapter;
         // Keep track of bindings to avoid premature garbage collection
         private readonly List<Binding> _bindings = new List<Binding>();
 
@@ -71,7 +69,15 @@ namespace To_Do_List
             _adapter = Vm.Tasks.GetRecyclerAdapter(BindViewHolder,
                                           Resource.Layout.task_list_row, (int position1, View view1, int position2, View view2) =>
                                           {
-                                          Vm.NavigateCommand.Execute(Vm.Tasks[position2]);
+                                              try
+                                              {
+                                                  Vm.NavigateCommand.Execute(Vm.Tasks[position2]);
+
+                                              }
+                                              catch (Exception e)
+                                              {
+                                                  throw e;
+                                              }
                                             });
 
             //tAdapter = new TasksAdapter(tasksList);
@@ -91,9 +97,6 @@ namespace To_Do_List
                 this,
                 HandleNotificationMessage);
 
-            Tasks.SetCommand(
-                "Click",
-                Vm.NavigateCommand);
 
             // Binding and commanding
 

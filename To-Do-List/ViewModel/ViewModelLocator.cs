@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Views;
-using Microsoft.Practices.ServiceLocation;
 using To_Do_List.Design;
 using To_Do_List.Model;
 
@@ -36,6 +36,14 @@ namespace To_Do_List.ViewModel
             }
         }
 
+        public TaskViewModel Task
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TaskViewModel>();
+            }
+        }
+
         /// <summary>
         /// This property can be used to force the application to run with design time data.
         /// </summary>
@@ -64,6 +72,7 @@ namespace To_Do_List.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<TaskViewModel>();
         }
 
         /// <summary>

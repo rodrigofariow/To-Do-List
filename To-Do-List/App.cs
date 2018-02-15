@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
+using JimBobBennett.MvvmLight.AppCompat;
 using To_Do_List.ViewModel;
 
 namespace To_Do_List
@@ -20,10 +21,12 @@ namespace To_Do_List
                     DispatcherHelper.Initialize();
 
                     // Configure and register the MVVM Light NavigationService
-                    var nav = new NavigationService();
+                    var nav = new AppCompatNavigationService();
+
+                    
+                    nav.Configure(ViewModelLocator.TaskPageKey, typeof(TaskActivity));
 
                     SimpleIoc.Default.Register<INavigationService>(() => nav);
-                    nav.Configure(ViewModelLocator.TaskPageKey, typeof(TaskActivity));
 
                     // Register the MVVM Light DialogService
                     SimpleIoc.Default.Register<IDialogService, DialogService>();

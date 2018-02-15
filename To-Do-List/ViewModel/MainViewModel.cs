@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
-using Microsoft.Practices.ServiceLocation;
+using JimBobBennett.MvvmLight.AppCompat;
 using To_Do_List.Model;
 
 namespace To_Do_List.ViewModel
@@ -17,8 +19,8 @@ namespace To_Do_List.ViewModel
         private readonly ITaskService _taskService;
         private readonly INavigationService _navigationService;
         private RelayCommand _incrementCommand;
-        private List<Task> _tasks = new List<Task>();
-        private RelayCommand<Object> _navigateCommand;
+        private ObservableCollection<Task> _tasks;
+        private RelayCommand<Task> _navigateCommand;
         private bool _runClock;
         private RelayCommand<string> _showDialogCommand;
 
@@ -44,15 +46,25 @@ namespace To_Do_List.ViewModel
         /// Goes to the second page, using the navigation service.
         /// Use the "mvvmr*" snippet group to create more such commands.
         /// </summary>
-        public RelayCommand<Object> NavigateCommand
+        public RelayCommand<Task> NavigateCommand
         {
             get
             {
                 return _navigateCommand
-                       ?? (_navigateCommand = new RelayCommand<Object>(
-                           parameter => _navigationService.NavigateTo(
-                               ViewModelLocator.TaskPageKey,
-                               parameter)));
+                       ?? (_navigateCommand = new RelayCommand<Task>(
+                           task =>
+                           {
+                               if (!NavigateCommand.CanExecute(task))
+                               {
+                                   return;
+                               }
+
+                               _navigationService.NavigateTo(
+                                              ViewModelLocator.TaskPageKey,
+                                              task);
+                            },
+                           task => task != null));
+
             }
         }
 
@@ -89,23 +101,11 @@ namespace To_Do_List.ViewModel
         /// Changes to this property's value raise the PropertyChanged event.
         /// Use the "mvvminpc*" snippet group to create more such properties.
         /// </summary>
-        public List<Task> Tasks
+        public ObservableCollection<Task> Tasks
         {
             get
             {
-                _tasks.Add(new Task("Do the dishes", DateTime.Now));
-                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
-                _tasks.Add(new Task("Replace the gas bottle"));
-                _tasks.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
-                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
-                _tasks.Add(new Task("Do the dishes", DateTime.Now));
-                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
-                _tasks.Add(new Task("Replace the gas bottle"));
-                _tasks.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
-                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
-                _tasks.Add(new Task("Do the dishes", DateTime.Now));
-                _tasks.Add(new Task("Buy some fruit", DateTime.Now));
-                _tasks.Add(new Task("Replace the gas bottle"));
+
                 return _tasks;
             }
             set
@@ -123,6 +123,22 @@ namespace To_Do_List.ViewModel
         {
             _taskService = taskService;
             _navigationService = navigationService;
+
+            _tasks = new ObservableCollection<Task>();
+
+            _tasks.Add(new Task("Do the dishes", DateTime.Now));
+            _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+            _tasks.Add(new Task("Replace the gas bottle"));
+            _tasks.Add(new Task("Buy a programmer T-shirt", "One that actually makes you look cool"));
+            _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+            _tasks.Add(new Task("Do the dishes", DateTime.Now));
+            _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+            _tasks.Add(new Task("Replace the gas bottle"));
+            _tasks.Add(new Task("Buy a programmer T-shirt", DateTime.Now, "One that actually makes you look cool"));
+            _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+            _tasks.Add(new Task("Do the dishes", DateTime.Now));
+            _tasks.Add(new Task("Buy some fruit", DateTime.Now));
+            _tasks.Add(new Task("Replace the gas bottle"));
 
             //_taskService.GetTasks(
             //    (item, error) =>

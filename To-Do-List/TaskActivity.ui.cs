@@ -5,6 +5,7 @@ using Android.Widget;
 using GalaSoft.MvvmLight.Views;
 using JimBobBennett.MvvmLight.AppCompat;
 using To_Do_List.Model;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace To_Do_List
 {
@@ -14,81 +15,71 @@ namespace To_Do_List
     public partial class TaskActivity : AppCompatActivityBase
     {
 
-        //private TextView _welcomeText;
+        private Toolbar _toolbar;
 
-        //public TextView WelcomeText
-        //{
-        //    get
-        //    {
-        //        return _welcomeText
-        //               ?? (_welcomeText = FindViewById<TextView>(Resource.Id.WelcomeText));
-        //    }
-        //}
+        public Toolbar Toolbar
+        {
+            get
+            {
+                return _toolbar
+                       ?? (_toolbar = FindViewById<Toolbar>(Resource.Id.toolbar));
+            }
+        }
 
-        //private Button _incrementButton;
+        private TextView _title;
 
-        //public Button IncrementButton
-        //{
-        //    get
-        //    {
-        //        return _incrementButton
-        //               ?? (_incrementButton = FindViewById<Button>(Resource.Id.IncrementButton));
-        //    }
-        //}
+        public TextView Title
+        {
+            get
+            {
+                return _title
+                       ?? (_title = FindViewById<TextView>(Resource.Id.title));
+            }
+        }
 
-        //private TextView _tapText;
+        private TextView _contentLabel;
 
-        //public TextView TapText
-        //{
-        //    get
-        //    {
-        //        return _tapText
-        //               ?? (_tapText = FindViewById<TextView>(Resource.Id.TapText));
-        //    }
-        //}
+        public TextView ContentLabel
+        {
+            get
+            {
+                return _contentLabel
+                       ?? (_contentLabel = FindViewById<TextView>(Resource.Id.content));
+            }
+        }
 
-        //private Button _showDialogButton;
+        private TextView _content;
 
-        //public Button ShowDialogButton
-        //{
-        //    get
-        //    {
-        //        return _showDialogButton
-        //               ?? (_showDialogButton = FindViewById<Button>(Resource.Id.ShowDialogButton));
-        //    }
-        //}
+        public TextView Content
+        {
+            get
+            {
+                return _content
+                       ?? (_content = FindViewById<TextView>(Resource.Id.content));
+            }
+        }
 
-        //private EditText _dialogNavText;
+        private DatePicker _date;
 
-        //public EditText DialogNavText
-        //{
-        //    get
-        //    {
-        //        return _dialogNavText
-        //               ?? (_dialogNavText = FindViewById<EditText>(Resource.Id.DialogNavText));
-        //    }
-        //}
+        public DatePicker Date
+        {
+            get
+            {
+                return _date
+                       ?? (_date = FindViewById<DatePicker>(Resource.Id.date));
+            }
+        }
 
-        //private TextView _clockText;
+        private TextView _dateLabel;
 
-        //public TextView ClockText
-        //{
-        //    get
-        //    {
-        //        return _clockText
-        //               ?? (_clockText = FindViewById<TextView>(Resource.Id.ClockText));
-        //    }
-        //}
+        public TextView DateLabel
+        {
+            get
+            {
+                return _dateLabel
+                       ?? (_dateLabel = FindViewById<TextView>(Resource.Id.dateLabel));
+            }
+        }
 
-        //private Button _sendMessageButton;
-
-        //public Button SendMessageButton
-        //{
-        //    get
-        //    {
-        //        return _sendMessageButton
-        //               ?? (_sendMessageButton = FindViewById<Button>(Resource.Id.SendMessageButton));
-        //    }
-        //}
     }
 }

@@ -14,8 +14,7 @@ using Newtonsoft.Json;
 
 namespace To_Do_List.Model
 {
-    [Serializable]
-    public class Task : Java.Lang.Object
+    public class Task
     {
         public Task(string title, DateTime date, string content = "")
         {
