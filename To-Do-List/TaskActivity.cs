@@ -32,6 +32,7 @@ namespace To_Do_List
             }
         }
 
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -40,6 +41,7 @@ namespace To_Do_List
             SetContentView(Resource.Layout.Task_details);
 
             SetSupportActionBar(Toolbar);
+            Toolbar.InflateMenu(Resource.Menu.task_details_menu);
 
             var nav = (AppCompatNavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
             Vm.PreviousTask = nav.GetAndRemoveParameter(Intent) as Task;
@@ -52,12 +54,15 @@ namespace To_Do_List
                     this.SetBinding(
                         () => Vm.EditedTask.Title,
                         () => Title.Text,
-                        BindingMode.TwoWay));
+                        BindingMode.TwoWay
+                    ));
+
+
 
                 _bindings.Add(
-                    this.SetBinding(
-                        () => (DateTime)Vm.EditedTask.Date,
-                        () => Date.DateTime));
+                this.SetBinding(
+                    () => Vm.EditedTask.Date,
+                    () => Date.DateTime));
 
                 _bindings.Add(
                 this.SetBinding(

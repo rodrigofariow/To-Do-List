@@ -20,6 +20,7 @@ namespace To_Do_List.ViewModel
         private readonly INavigationService _navigationService;
         private RelayCommand<Task> _navigateCommand;
         private RelayCommand<string> _showDialogCommand;
+        private RelayCommand<Task> _taskChangedCommand;
 
         private Task _previousTask;
 
@@ -54,6 +55,16 @@ namespace To_Do_List.ViewModel
             }
         }
 
+        public RelayCommand<Task> TaskChangedCommand
+        {
+            get
+            {
+                return _taskChangedCommand
+                    ?? (_taskChangedCommand = new RelayCommand<Task>(
+                        task => {       
+                    })); // This line disables the button if the text is null or empty
+            }
+        }
 
         /// <summary>
         /// Gets the ShowDialogCommand.

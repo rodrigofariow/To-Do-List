@@ -34,7 +34,9 @@ namespace To_Do_List
             title.Text = taskModel.Title;
 
             var date = holder.FindCachedViewById<TextView>(Resource.Id.date);
-            date.Text = taskModel.Date.HasValue ? ((DateTime)taskModel.Date).ToShortDateString() : "";
+            //date.Text = taskModel.Date.HasValue ? ((DateTime)taskModel.Date).ToShortDateString() : "";
+            date.Text = taskModel.Date.ToShortDateString();
+
         }
 
         public RecyclerView TaskRecyclerView
@@ -78,7 +80,7 @@ namespace To_Do_List
                                               {
                                                   throw e;
                                               }
-                                            });
+                                          });
 
             //tAdapter = new TasksAdapter(tasksList);
             //tAdapter.ItemClick += OnItemClick;
@@ -90,7 +92,7 @@ namespace To_Do_List
 
             _taskRecyclerView.SetAdapter(_adapter);
 
-            
+
             // Illustrates how to use the Messenger by receiving a message
             // and sending a message back.
             Messenger.Default.Register<NotificationMessageAction<string>>(

@@ -27,12 +27,11 @@ namespace To_Do_List.Model
         {
             Title = title;
             Content = content;
-            Date = null;
         }
 
         public string Title { get; private set; }
         public string Content { get; private set; }
-        public DateTime? Date { get; private set; }
+        public DateTime Date { get; private set; }
 
     }
 }
