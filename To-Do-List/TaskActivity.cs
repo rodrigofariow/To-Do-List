@@ -32,6 +32,12 @@ namespace To_Do_List
             }
         }
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Layout.task_details_menu, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -41,7 +47,7 @@ namespace To_Do_List
             SetContentView(Resource.Layout.Task_details);
 
             SetSupportActionBar(Toolbar);
-            Toolbar.InflateMenu(Resource.Menu.task_details_menu);
+            Toolbar.InflateMenu(Resource.Layout.task_details_menu);
 
             var nav = (AppCompatNavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
             Vm.PreviousTask = nav.GetAndRemoveParameter(Intent) as Task;
@@ -49,6 +55,7 @@ namespace To_Do_List
 
             if (Vm.PreviousTask != null)
             {
+                Vm.EditedTask = new Task(Vm.PreviousTask.Title, Vm.PreviousTask.Date, Vm.PreviousTask.Content);
 
                 _bindings.Add(
                     this.SetBinding(
@@ -57,21 +64,20 @@ namespace To_Do_List
                         BindingMode.TwoWay
                     ));
 
+                var saveButton = (Button) FindViewById(Resource.Id.saveButton);
 
-
-                _bindings.Add(
-                this.SetBinding(
-                    () => Vm.EditedTask.Date,
-                    () => Date.DateTime));
-
-                _bindings.Add(
-                this.SetBinding(
+                //_bindings.Add(
+                //this.SetBinding(
+                //() => Vm.EditedTask.Date,
+                //() => Date.DateTime));
+                _bindings.Add(this.SetBinding(
                     () => Vm.EditedTask.Content,
                     () => Content.Text,
                     BindingMode.TwoWay));
 
-                Vm.EditedTask = Vm.PreviousTask;
-
+                var taskChangedBinding = this.SetBinding(() => Vm.EditedTask);
+                _bindings.Add(taskChangedBinding);
+                saveButton.SetCommand(Vm.TaskChangedCommand, taskChangedBinding);
                 //Title.Text = Vm.PreviousTask.Title;
                 //if (Vm.PreviousTask.Content != "")
                 //{

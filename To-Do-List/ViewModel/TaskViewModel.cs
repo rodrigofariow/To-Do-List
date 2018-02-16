@@ -51,7 +51,6 @@ namespace To_Do_List.ViewModel
             set
             {
                 Set(ref _editedTask, value);
-                Console.WriteLine(_editedTask);
             }
         }
 
@@ -61,8 +60,10 @@ namespace To_Do_List.ViewModel
             {
                 return _taskChangedCommand
                     ?? (_taskChangedCommand = new RelayCommand<Task>(
-                        task => {       
-                    })); // This line disables the button if the text is null or empty
+                        task => {    
+
+                    },
+                        task => !(_previousTask.Equals(_editedTask)))); 
             }
         }
 

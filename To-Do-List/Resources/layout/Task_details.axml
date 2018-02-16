@@ -60,5 +60,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:datePickerMode="spinner"
-        android:visibility="visible" />
+        android:visibility="invisible" />
+    <Button
+        android:id="@+id/saveButton"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateLabel"
+        android:layout_weight="1"
+        android:text="Save" />
 </RelativeLayout>
